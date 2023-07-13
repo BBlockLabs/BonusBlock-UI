@@ -33,6 +33,11 @@ const router = createRouter({
       name: "Collect Rewards",
       component: () => import("@/views/CollectRewardsView.vue"),
     },
+    {
+      path: "/serenity",
+      name: "Serenity",
+      component: () => import("@/views/SerenityInfo.vue"),
+    },
   ],
 });
 
