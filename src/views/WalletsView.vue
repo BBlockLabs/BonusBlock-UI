@@ -34,13 +34,17 @@
       </h2>
     </el-row>
     <el-row :gutter="10">
-      <el-col :span="12" class="my-small">
+      <el-col :span="8" class="my-small">
         <wallet-box-keplr />
       </el-col>
 
-      <el-col :span="12" class="my-small">
+      <el-col :span="8" class="my-small">
         <wallet-box-metamask />
       </el-col>
+
+<!--      <el-col :span="8" class="my-small">-->
+<!--        <wallet-box-phantom />-->
+<!--      </el-col>-->
     </el-row>
 
     <el-row>
@@ -79,6 +83,7 @@ import WalletBoxKeplr from "@/components/WalletBoxKeplr.vue";
 import WalletBoxMetamask from "@/components/WalletBoxMetamask.vue";
 import SvgInfo from "@/assets/icons/info.svg?component";
 import AnnouncementList from "@/components/AnnouncementList.vue";
+import WalletBoxPhantom from "@/components/WalletBoxPhantom.vue";
 </script>
 
 <style lang="scss">
