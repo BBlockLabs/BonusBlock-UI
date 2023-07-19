@@ -166,6 +166,29 @@ export default class Actions implements ActionsInterface {
     return responseData.payload;
   };
 
+  phantomCheckResponse = async (
+    context: Context,
+    payload: KeplrCheckResponseRequest
+  ): Promise<LoginResponse> => {
+    const response: Response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/auth/phantom`,
+      {
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": context.rootState.UserModule?.token || "",
+        },
+        method: "POST",
+      }
+    );
+
+    const responseData = await HttpResponse.fromResponse<LoginResponse>(
+      response
+    );
+
+    return responseData.payload;
+  };
+
   connectEthereum = async (
     context: Context,
     payload: MetamaskConnectRequest

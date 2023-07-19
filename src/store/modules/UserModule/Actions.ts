@@ -26,6 +26,7 @@ import { Plugins } from "@/common/Plugins";
 import MetamaskClient from "@/common/MetamaskClient";
 import Chain from "@/common/Chain";
 import Toast from "@/common/Toast";
+import { store } from "@/store";
 
 export type Context = ActionContext<StateInterface, RootStateInterface>;
 export type UserAction = Action<StateInterface, RootStateInterface>;
@@ -58,6 +59,13 @@ export interface ActionsInterface
       this: Store<RootStateInterface>,
       context: Context,
       referralId: string | null
+    ) => Promise<void>);
+
+  phantomLogin: UserAction &
+    ((
+      this: Store<RootStateInterface>,
+      context: Context,
+      payload: string | null
     ) => Promise<void>);
 
   logout: UserAction &
@@ -331,6 +339,55 @@ export default class Actions implements ActionsInterface {
     context.commit("setActiveWallet", null);
     context.commit("setUser", null);
     context.commit("resetWallets", null);
+  };
+
+  phantomLogin = async (
+    context: Context,
+    referral: string | null
+  ): Promise<void> => {
+    // @ts-ignore
+    if (!window.phantom) {
+      throw new FormattedError(
+        "Phantom extension not reachable. Enable or install it first and reload the page."
+      );
+    }
+
+    let nonce: string;
+    try {
+      nonce = crypto.randomUUID();
+    } catch (e) {
+      nonce = new Date().valueOf() + "-" + Math.random();
+    }
+
+    const ticket: string = await context.dispatch(
+      "HttpModule/getAuthTicket",
+      nonce,
+      { root: true }
+    );
+
+    // @ts-ignore
+    const provider = window.phantom?.solana;
+    await provider.connect();
+    const encodedMessage = new TextEncoder().encode(ticket);
+    const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+
+    const signedObject = {
+      signature: signedMessage.signature.toString("base64"),
+      publicKey: signedMessage.publicKey.toString(),
+      data: ticket,
+    };
+
+    const loginResponse: LoginResponse = await context.dispatch(
+      "HttpModule/phantomCheckResponse",
+      new KeplrCheckResponseRequest(
+        JSON.stringify(signedObject),
+        nonce,
+        referral
+      ),
+      { root: true }
+    );
+
+    await context.dispatch("setLoginResponseData", loginResponse);
   };
 
   logout = async (context: Context): Promise<void> => {
