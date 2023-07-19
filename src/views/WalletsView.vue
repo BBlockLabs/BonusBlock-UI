@@ -42,9 +42,9 @@
         <wallet-box-metamask />
       </el-col>
 
-      <el-col :span="8" class="my-small">
-        <wallet-box-phantom />
-      </el-col>
+<!--      <el-col :span="8" class="my-small">-->
+<!--        <wallet-box-phantom />-->
+<!--      </el-col>-->
     </el-row>
 
     <el-row>

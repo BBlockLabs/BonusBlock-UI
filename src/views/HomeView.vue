@@ -41,7 +41,7 @@
 
             <el-col :md="6" :xl="5" class="my-small">
               <el-button size="large" class="w-100" @click="onPhantomLogin">
-                <svg-phantom class="mr-medium icon-medium" />
+                <svg-phantom class="mr-medium icon-medium" style="color: #aa9ecb" />
                 <b>Continue with Phantom</b>
               </el-button>
             </el-col>
