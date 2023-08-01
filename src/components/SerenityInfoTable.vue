@@ -11,10 +11,9 @@
           raw-content
           placement="bottom-start"
         >
-        <a :href="'https://testnet.bscscan.com/tx/' + scope.row.trxId" target="_blank">
-<!--            <svg-info class="icon-normal mr-extra-small" style="width: 25px;position: relative;margin: 0;top: 5px;"/>-->
+          <el-link :href="'https://testnet.bscscan.com/tx/' + scope.row.trxId" target="_blank" :underline="false">
             {{ scope.row.trxId.substring(0, 35) }}...
-        </a>
+          </el-link>
         </el-tooltip>
       </template>
     </el-table-column>
