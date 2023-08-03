@@ -18,10 +18,13 @@
             backgroundColor: randomBackgroundColor(announcement.id),
           }"
         ></div>
-        <div class="card-content" style="flex-grow:1">
-          <h3 class="fs-large my-base">{{ announcement.title }}</h3>
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-html="announcement.description" />
+        <div class="pl-large pb-large mb-small card-content" style="flex-grow:1">
+          <el-scrollbar :always="true" wrap-class="mr-large">
+            <h3 class="fs-large my-base">{{ announcement.title }}</h3>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="announcement.description" />
+          </el-scrollbar>
+
         </div>
         <div class="d-flex mb-large" style="padding-left:1.5em;padding-right:1.5em;">
           <div v-for="social in announcement.socials" :key="social.type">

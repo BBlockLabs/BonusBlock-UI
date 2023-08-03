@@ -122,7 +122,8 @@
   }
 
   .card-content {
-    padding: 0 1.25em 1.25em 1.25em;
+    max-height: 20em;
+    overflow: auto;
 
     .social-links {
       gap: 0.5em;
