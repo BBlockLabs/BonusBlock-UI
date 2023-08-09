@@ -499,11 +499,5 @@ function generateAndCopyClaimImage(campaign: CampaignWithRewardDto): void {
 </script>
 
 <style scoped>
-.align-items-center {
-  align-items: center;
-}
 
-.justify-content-center {
-  justify-content: center;
-}
 </style>
