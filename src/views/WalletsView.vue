@@ -47,6 +47,8 @@
 <!--      </el-col>-->
     </el-row>
 
+    <SerenityBanner />
+
     <el-row>
       <h2>Announcements</h2>
     </el-row>
@@ -83,7 +85,8 @@ import WalletBoxKeplr from "@/components/WalletBoxKeplr.vue";
 import WalletBoxMetamask from "@/components/WalletBoxMetamask.vue";
 import SvgInfo from "@/assets/icons/info.svg?component";
 import AnnouncementList from "@/components/AnnouncementList.vue";
-import WalletBoxPhantom from "@/components/WalletBoxPhantom.vue";
+import SerenityBanner from "@/components/SerenityBanner.vue";
+
 </script>
 
 <style lang="scss">

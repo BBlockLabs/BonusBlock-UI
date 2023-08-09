@@ -56,6 +56,15 @@
       <svg-youtube />
     </el-link>
     <el-link
+      v-if="props.instagram"
+      :href="props.instagram"
+      target="_blank"
+      :underline="false"
+      class="icon-instagram"
+    >
+      <svg-instagram />
+    </el-link>
+    <el-link
       v-if="props.website"
       :href="props.website"
       target="_blank"
@@ -92,6 +101,7 @@ import SvgTelegram from "@/assets/icons/telegram.svg?component";
 import SvgReddit from "@/assets/icons/reddit.svg?component";
 import SvgDiscord from "@/assets/icons/discord.svg?component";
 import SvgYoutube from "@/assets/icons/youtube.svg?component";
+import SvgInstagram from "@/assets/icons/instagram.svg?component";
 import SvgWebsite from "@/assets/icons/website.svg?component";
 import SvgNewsletter from "@/assets/icons/newsletter.svg?component";
 import SvgBlog from "@/assets/icons/blog.svg?component";
@@ -102,6 +112,7 @@ export interface Props {
   telegram?: string;
   reddit?: string;
   discord?: string;
+  instagram?: string;
   youtube?: string;
   website?: string;
   newsletter?: string;
@@ -115,16 +126,6 @@ const props = defineProps<Props>();
 .social-links {
   svg {
     height: 1.714em;
-  }
-
-  .icon-discord {
-    position: relative;
-    top: 0.15em;
-  }
-
-  .icon-youtube {
-    position: relative;
-    top: 0.15em;
   }
 }
 </style>

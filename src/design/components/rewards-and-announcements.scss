@@ -130,3 +130,38 @@
     }
   }
 }
+
+.big-announcement-card {
+  flex-wrap: nowrap;
+  overflow: hidden;
+
+  .big-announcement-banner {
+    img {
+      width: 100%;
+      display: block;
+    }
+
+  }
+  .big-announcement-description {
+    width: 45em;
+    display: flex;
+    flex-direction: column;
+    min-height: 35em;
+    gap: 1em;
+  }
+}
+
+@media only screen and (max-width: 1800px){
+
+  .big-announcement-card {
+    flex-wrap: wrap;
+    .big-announcement-banner {
+      flex-grow: 1;
+    }
+
+    .big-announcement-description {
+      min-width: 100%;
+    }
+  }
+
+}
