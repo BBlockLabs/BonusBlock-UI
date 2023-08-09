@@ -46,7 +46,7 @@
               </el-row>
               <el-row align="middle" justify="space-between">
                 <social-links
-                  class="fs-large"
+                  class="fs-medium"
                   twitter="https://twitter.com/SerenityShield_"
                   telegram="https://t.me/serenityshield"
                   discord="https://discord.com/invite/serenityshield"
