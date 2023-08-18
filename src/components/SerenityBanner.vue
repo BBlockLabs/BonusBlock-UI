@@ -55,7 +55,7 @@
                 />
                 <el-link
                   target="_blank"
-                  href="https://block-serenityshield.vercel.app/"
+                  href="https://block-strongbox.serenityshield.io/"
                   :underline="false"
                 >
                   <el-button class="fs-slightly-larger" type="primary">
