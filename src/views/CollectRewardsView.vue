@@ -304,7 +304,7 @@ async function claimCampaign(campaign: CampaignWithRewardDto): Promise<void> {
     let txHash: string = await MetamaskClient.sendTransaction(
       provider,
       campaign.smartContractAddress,
-      response.claimFee,
+      response.claimFee ? response.claimFee : "0",
       response.memo
     );
 
