@@ -154,6 +154,7 @@
               >
                 <div>
                   <el-button
+                    :loading="claimModal.loading"
                     type="primary"
                     class="yellow-button"
                     :disabled="!campaign.amount"
@@ -289,6 +290,7 @@ function openCampaignDetails(campaign: CampaignWithRewardDto): void {
 }
 
 async function claimCampaign(campaign: CampaignWithRewardDto): Promise<void> {
+
   claimModal.campaign = campaign;
   claimModal.loading = true;
 
@@ -298,19 +300,24 @@ async function claimCampaign(campaign: CampaignWithRewardDto): Promise<void> {
     });
 
     const provider = await detectEthereumProvider();
-    await MetamaskClient.sendTransaction(
+
+    let txHash: string = await MetamaskClient.sendTransaction(
       provider,
       campaign.smartContractAddress,
-      "0",
+      response.claimFee ? response.claimFee : "0",
       response.memo
     );
 
-    await store.dispatch("HttpModule/claimRewardInit", {
-      campaignId: campaign.id,
-    });
+    if (txHash != undefined){
+      await MetamaskClient.checkTx(provider, txHash);
 
-    claimModal.loading = false;
-    claimModal.open = true;
+      await store.dispatch("HttpModule/claimRewardInit", {
+        campaignId: campaign.id,
+      });
+
+      claimModal.loading = false;
+      claimModal.open = true;
+    }
   } catch (e: any) {
     claimModal.open = false;
     ElMessage({
