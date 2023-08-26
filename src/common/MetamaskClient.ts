@@ -122,16 +122,15 @@ export default class MetamaskClient {
     to: string,
     value: string,
     data: string
-  ): Promise<Array<string>> {
+  ): Promise<string> {
     try {
       const accounts: Array<string> = await provider.request({
         method: "eth_accounts",
       });
 
       if (accounts.length == 0) {
-        return [];
+        throw new Error("No accounts found");
       }
-
       return await provider.request({
         method: "eth_sendTransaction",
         params: [
@@ -147,5 +146,36 @@ export default class MetamaskClient {
       console.error(error);
       throw error;
     }
+  }
+
+  static async checkTx(provider: any, thHash: string, attempt: number = 0){
+    const attemptCount: number = 5;
+    const retryDelay: number = 5000;
+    let result;
+    const timer = (ms: number | undefined) => new Promise((res) => setTimeout(res, ms));
+
+    do {
+      attempt++;
+      console.log("Checking transaction " + thHash + " attempt " + attempt + "/" + attemptCount);
+      if (attempt > attemptCount) {
+        throw new Error("Failed to check transaction after "+ attemptCount + " attempts")
+      }
+      result = await provider.send(
+        {
+          method: "eth_getTransactionReceipt",
+          params: [thHash],
+        },
+        function (error: any, result: any) {
+          if (!error) {
+            return result.result;
+          } else {
+            return null;
+          }
+        }
+      );
+      await timer(retryDelay);
+    } while (!result);
+    console.log("Transaction " + thHash + " is successful");
+    return result;
   }
 }
