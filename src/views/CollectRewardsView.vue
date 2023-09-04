@@ -315,6 +315,9 @@ async function claimCampaign(campaign: CampaignWithRewardDto): Promise<void> {
         campaignId: campaign.id,
       });
 
+      let campaignIndex = campaigns.indexOf(campaign)
+      campaigns.splice(campaignIndex, 1);
+
       claimModal.loading = false;
       claimModal.open = true;
     }
