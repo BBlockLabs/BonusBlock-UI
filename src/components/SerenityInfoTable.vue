@@ -1,4 +1,6 @@
 <template>
+  <div class="my-small">Total successful TX count: {{ totalCount }}</div>
+
   <el-table :data="tableData">
     <el-table-column :min-width="10" prop="id" label="#"/>
     <el-table-column :min-width="35" prop="blockTime" label="Block time"/>
@@ -32,6 +34,7 @@ import HttpResponse from "@/common/api/HttpResponse";
 const store: StoreType = useStore();
 
 let tableData = ref();
+let totalCount = ref();
 
 async function loadData() {
   const response: Response = await fetch(
@@ -46,9 +49,13 @@ async function loadData() {
     }
   );
   const responseData = await HttpResponse.fromResponse<null>(response);
+
+  const tableDataResponse = responseData.payload.tableData;
+  totalCount.value = responseData.payload.totalCount;
+
   let ret = [];
-  for (let i = 0; i < responseData.payload.length; i++) {
-    let el = responseData.payload[i];
+  for (let i = 0; i < tableDataResponse.length; i++) {
+    let el = tableDataResponse[i];
     el.id = i + 1;
     ret.push(el);
   }
