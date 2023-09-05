@@ -30,12 +30,8 @@
                 <el-col class="bold" :span="-1">
                   <el-row align="middle">
                     <span class="d-flex align-items-center">
-                      <img
-                        class="mr-extra-small"
-                        style="height: 32px"
-                        :src="PngSersh"
-                        alt=""
-                      />{{ anouncementData.rewardPoolSize }} $SERSH
+                      <SvgSersh class="mr-extra-small" style="height: 32px" />
+                      {{ anouncementData.rewardPoolSize }} $SERSH
                     </span>
                   </el-row>
                 </el-col>
@@ -73,14 +69,14 @@
 
 <script setup lang="ts">
 import BoxWrapper from "@/components/BoxWrapper.vue";
-import PngSersh from "@/assets/currencies/sersh.png";
+import SvgSersh from "@/assets/currencies/sersh.svg";
 import SocialLinks from "@/components/ExternalLinks.vue";
 
 const anouncementData = {
   bannerImg:
     "https://uploads-ssl.webflow.com/646e2681b1e16cd1a28f9571/64d299caec51a1081931e9cb_banner_img_6.jpg",
   title: "SerenityShield",
-  rewardPoolSize: "30,000.00",
+  rewardPoolSize: "50,000.00",
   description:
     '<p class="p1"><strong>Mission: </strong>Mission: Interact with the StrongBox platform on Solana testnet with Phantom wallet and add your MetaMask BNB chain wallet to be eligible of receiving the reward.&nbsp;</p>\n' +
     '<p class="p1"><span>When it comes to protecting your crypto and persona information, Serenity Shield is here to help.</span><br /><span>Your confidential data and seed phrases will be safe and sound in our <strong>StrongBox®</strong> DApp, which functions like a virtual safe or vault. No special gear is required to access your data; if something happens, your stored information will be distributed according to your preferences using our decentralized inheritance function. You simply select the wallet of your choice, and we supply the StrongBox.</span></p>\n' +
