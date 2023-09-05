@@ -133,10 +133,7 @@
               </div-->
             </el-row>
             <el-row justify="space-between" align="middle">
-              <component
-                :is="currencyIcons[campaign.currency] ?? 'div'"
-                class="currency-icon"
-              />
+              <div class="currency-icon" v-html="currencyIcons[campaign.currency]"></div>
               <div v-if="campaign.amount" class="flex-grow ml-small">
                 {{ getHumanAmount(campaign).substring(0, 17) }}
                 {{ campaign.currency }}
@@ -194,15 +191,17 @@ import SvgLock from "@/assets/icons/lock.svg?component";
 import SvgLink from "@/assets/icons/open-new-window.svg?component";
 import SvgClock from "@/assets/icons/clock.svg?component";
 //import SvgChevronRight from "@/assets/icons/nav-arrow-right.svg?component";
-import SvgShare from "@/assets/icons/share.svg?component";
-import SvgAry from "@/assets/currencies/ary.svg?component";
-import SvgBab from "@/assets/currencies/bab.svg?component";
-import SvgBeam from "@/assets/currencies/beam.svg?component";
-import SvgEth from "@/assets/currencies/eth.svg?component";
-import SvgEvx from "@/assets/currencies/evx.svg?component";
-import SvgLuna from "@/assets/currencies/luna.svg?component";
-import SvgPowr from "@/assets/currencies/powr.svg?component";
-import SvgUni from "@/assets/currencies/uni.svg?component";
+import SvgShare from "@/assets/icons/share.svg?raw";
+import SvgAry from "@/assets/currencies/ary.svg?raw";
+import SvgBab from "@/assets/currencies/bab.svg?raw";
+import SvgBeam from "@/assets/currencies/beam.svg?raw";
+import SvgEth from "@/assets/currencies/eth.svg?raw";
+import SvgEvx from "@/assets/currencies/evx.svg?raw";
+import SvgLuna from "@/assets/currencies/luna.svg?raw";
+import SvgPowr from "@/assets/currencies/powr.svg?raw";
+import SvgUni from "@/assets/currencies/uni.svg?raw";
+import SvgBnb from "@/assets/currencies/bnb.svg?raw";
+import SvgSersh from "@/assets/currencies/sersh.svg?raw";
 import SvgMedal from "@/assets/images/congratulations_medal.svg?component";
 import SvgCubeTop from "@/assets/icons/cube-top.svg?component";
 import ClaimSharingBackground from "@/assets/images/claim-sharing-image-template.svg?raw";
@@ -223,6 +222,8 @@ const currencyIcons = {
   LUNA: SvgLuna,
   POWR: SvgPowr,
   UNI: SvgUni,
+  BNB: SvgSersh,
+  SERSH: SvgSersh,
 };
 
 let localTimeOffsetMs: number = 0;
@@ -496,7 +497,8 @@ function generateAndCopyClaimImage(campaign: CampaignWithRewardDto): void {
         .replace(/\{currency}/g, campaign.currency)
         .replace(/\{amount}/g, getHumanAmount(campaign).substring(0, 9))
         .replace(/\{network}/g, campaign.networkName)
-        .replace(/\{qr_data}/g, qrData);
+        .replace(/\{qr_data}/g, qrData)
+        .replace(/\{currency-logo}/g, btoa(currencyIcons[campaign.currency as keyof typeof currencyIcons]))
       svgBase46 = "data:image/svg+xml;base64," + btoa(svgData);
       img.src = svgBase46;
     } catch (e) {

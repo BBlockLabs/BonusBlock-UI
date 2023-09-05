@@ -60,15 +60,7 @@
         <path d="M764.44 69.79H739.5l-12.46 21.3 25.08.15 12.3-21.45Z" fill="#f5bf5b"/>
         <path d="m739.53 112.53-12.63 21.45h24.13l13.4-21.45h-24.9Z" fill="#f5bf5b"/>
     </g>
-    <g id="currency-logo">
-        <path d="M76 217a28 28 0 1 0 0-56 28 28 0 0 0 0 56Z" fill="#627eea"/>
-        <path d="M76 168v15.52l13.12 5.86L76 168Z" fill="#fff" fill-opacity=".6"/>
-        <path d="m76.87 168-13.12 21.38 13.12-5.86V168Z" fill="#fff"/>
-        <path d="M76 200.12v10.54l13.13-18.16L76 200.12Z" fill="#fff" fill-opacity=".6"/>
-        <path d="M76.87 210.66v-10.55l-13.12-7.61 13.12 18.16Z" fill="#fff"/>
-        <path d="m76 197.23 13.12-7.62L76 183.75v13.48Z" fill="#fff" fill-opacity=".2"/>
-        <path d="m63.75 189.6 13.12 7.63v-13.48l-13.12 5.86Z" fill="#fff" fill-opacity=".6"/>
-    </g>
+    <image height="60" id="j" width="60" x="45" y="160" xlink:href="data:image/svg+xml;base64,{currency-logo}"/>
     <g id="network-border">
         <path d="M50 418.5h391a11.5 11.5 0 0 1 11.5 11.5v108a11.5 11.5 0 0 1-11.5 11.5H50A11.5 11.5 0 0 1 38.5 538V430A11.5 11.5 0 0 1 50 418.5Z" fill="none" stroke="#000" stroke-linecap="butt" stroke-linejoin="miter"/>
     </g>
@@ -79,6 +71,7 @@
         <text fill="#909399" font-family="Helvetica" font-size="20" letter-spacing="1" x="48" y="119.76">
             {campaign_week}
         </text>
+
         <text fill="#1e1c4e" font-family="Helvetica" font-size="48" font-weight="bold" letter-spacing="2" x="120" y="207.62">
             {currency}
         </text>
