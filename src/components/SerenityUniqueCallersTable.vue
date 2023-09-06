@@ -10,7 +10,7 @@
           raw-content
           placement="bottom-start"
         >
-          <el-link :href="'https://testnet.bscscan.com/address/'+ scope.row.senderAddress +'?toaddress=0xb7564227245bb161ebf4d350e1056c26801f1366'" target="_blank" :underline="false">
+          <el-link :href="'https://testnet.bscscan.com/address/'+ scope.row.senderAddress" target="_blank" :underline="false">
             {{ scope.row.senderAddress }}
           </el-link>
         </el-tooltip>
