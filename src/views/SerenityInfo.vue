@@ -1,10 +1,18 @@
 <template>
   <PageWrapper :full-width="true" class="fs-slightly-larger">
     <div class="my-small">Total successful TX count: {{ totalCount }}</div>
-    <h1>Successful transactions from unique addresses:</h1>
-    <SerenityUniqueCallersTable :table-data="uniqueCalls" />
+    <h1>Successful transactions from {{uniqueCalls ? uniqueCalls.length : ""}} unique  addresses:</h1>
+    <SerenityUniqueCallersTable
+      v-loading="!uniqueCalls"
+      style="height: 33.5em; overflow: auto"
+      :table-data="uniqueCalls"
+    />
     <h1>100 latest successful transactions:</h1>
-    <SerenityLatestCallsTable :table-data="latestTransactions" />
+    <SerenityLatestCallsTable
+      v-loading="!latestTransactions"
+      style="height: 33.5em; overflow: auto"
+      :table-data="latestTransactions"
+    />
   </PageWrapper>
 </template>
 

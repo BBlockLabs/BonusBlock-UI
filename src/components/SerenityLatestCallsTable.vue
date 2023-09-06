@@ -18,7 +18,7 @@
       </template>
     </el-table-column>
     <el-table-column prop="sender" label="Sender address"/>
-    <el-table-column prop="functionHash" label="Function Hash"/>
+    <el-table-column prop="functionName" label="Function Name"/>
   </el-table>
 </template>
 
