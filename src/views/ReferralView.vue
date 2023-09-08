@@ -1,25 +1,15 @@
 <template>
   <PageWrapper card-back>
-    <el-row justify="space-between" :gutter="24" class="mt-extra-large">
+    <el-row justify="space-between" :gutter="24" class="w-100 my-extra-large referral-info">
       <el-col :md="16" :lg="17">
-        <h3 class="fs-medium mt-0">
+        <h3 class="fs-large mb-large title">
           Stack your first rewards by onboarding more users!
         </h3>
 
-        <b>Invitation Link</b>
+        <copy-box class="mt-small fs-normal bold mb-extra-large referral-link" :text="store.getters['UserModule/refLink']" />
 
-        <copy-box :text="store.getters['UserModule/refLink']" />
-
-        <p>
-          Once a new user signs-up and adds at least one wallet, it will be
-          counted towards a bigger reward.
-        </p>
-
-        <p>
-          <b>
-            NOTE: new wallets without any activity will not be considered as a
-            new user.
-          </b>
+        <p class="fs-medium">
+          Once a new user signs-up and adds at least one wallet, it will be counted towards a bigger reward.
         </p>
       </el-col>
 
@@ -52,3 +42,30 @@ import { useStore, StoreType } from "@/store";
 
 const store: StoreType = useStore();
 </script>
+
+<style lang="scss">
+
+.title{
+  color: var(--Obsidian-Shard, #060612);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.referral-link{
+  border-radius: 2px;
+  border: 1px solid var(--Obsidian-Shard, #060612);
+  background: var(--Obsidian-Shard, #060612);
+  box-shadow: 3px 3px 0px 0px #D4E68C, 4px 4px 0px 0px #060612;
+}
+
+.referral-info{
+  padding: 2em 4em 3em 4em;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid var(--Obsidian-Shard, #060612);
+  background: var(--White, #FFF);
+  box-shadow: 3px 3px 0px 0px #D4E68C, 4px 4px 0px 0px #060612;
+}
+</style>
