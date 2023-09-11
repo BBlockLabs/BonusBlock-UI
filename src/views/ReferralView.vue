@@ -69,7 +69,7 @@
             <div class="referrals-element fs-medium">
               {{ referralsItem.missionCount }}
             </div>
-            <div class="referrals-element last bold fs-medium">
+            <div class="referrals-element last fs-medium">
               {{ moment(referralsItem.registrationDate).format("LLL") }}
             </div>
           </template>
@@ -110,7 +110,7 @@
             >
               <span class="el-dropdown-link">
                 <el-icon class="el-icon--right bay">
-                  <svg-chevron-up"/>
+                  <svg-chevron-up class="svg-fill"/>
                 </el-icon>
               </span>
               <template #dropdown>
@@ -140,6 +140,7 @@ import PageWrapper from "@/components/PageWrapper.vue";
 import CopyBox from "@/components/CopyBox.vue";
 // import BoxWrapper from "@/components/BoxWrapper.vue";
 import InvitationCountCard from "@/components/InvitationCountCard.vue";
+import SvgChevronUp from "@/assets/icons/nav-arrow-up.svg?component";
 import { useStore, StoreType } from "@/store";
 import { store } from "@/store";
 import { onMounted, Ref, ref } from "vue";
@@ -287,7 +288,11 @@ onMounted(async () => {
   box-shadow: 3px 3px 0px 0px #d4e68c, 4px 4px 0px 0px #060612;
 }
 
-.bay {
+.bay{
   color: #62948d;
+}
+
+.svg-fill{
+  fill: #62948d !important;
 }
 </style>
