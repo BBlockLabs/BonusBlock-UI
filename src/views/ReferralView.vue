@@ -39,9 +39,9 @@
     </el-row>
     <div class="referrals-list p-extra-large">
       <div style="justify-content: space-between" class="mb-medium d-flex">
-        <h2 class="m-0">Invitation history</h2>
-        <div class="d-flex">
-          <SvgInfo class="mr-small icon-small" /> New wallets without any
+        <h2 class="m-0 title">Invitation history</h2>
+        <div class="d-flex bold">
+          <SvgInfo class="mr-small icon-small"/> New wallets without any
           activity will not be considered as a new user.
         </div>
       </div>
@@ -63,13 +63,13 @@
               </el-avatar>
               <span style="width: 75%">
                 {{ referralsItem.username }}
-                <span class="joined-text">has joined archway missions.</span>
+                <span class="joined-text">has joined BonusBlock.</span>
               </span>
             </div>
             <div class="referrals-element fs-medium">
               {{ referralsItem.missionCount }}
             </div>
-            <div class="referrals-element last fs-medium">
+            <div class="referrals-element last bold fs-medium">
               {{ moment(referralsItem.registrationDate).format("LLL") }}
             </div>
           </template>
@@ -83,7 +83,7 @@
         >
           <el-col :span="-1" class="bold">
             showing
-            <span class="archway-orange">
+            <span class="bay">
               {{ page * perPage - perPage + 1 }}-{{
                 page * perPage - perPage + referrals.searchResults.length
               }}
@@ -101,7 +101,7 @@
           </el-col>
           <el-col :span="-1">
             <strong>Results per page: </strong>
-            <strong class="archway-orange">{{ perPage }}</strong>
+            <strong class="bay">{{ perPage }}</strong>
             <el-dropdown
               class="dropdown"
               placement="top-end"
@@ -109,8 +109,8 @@
               @command="perPageChange"
             >
               <span class="el-dropdown-link">
-                <el-icon class="el-icon--right">
-                  <svg-chevron-up />
+                <el-icon class="el-icon--right bay">
+                  <svg-chevron-up"/>
                 </el-icon>
               </span>
               <template #dropdown>
@@ -126,7 +126,7 @@
         </el-row>
       </template>
       <template v-if="referrals.searchResults.length < 1">
-        <el-row class="fs-large mt-extra-large pb-large" justify="center">
+        <el-row class="fs-large mt-extra-large pb-large bay" justify="center">
           No data
         </el-row>
       </template>
@@ -213,19 +213,25 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
     padding: 0.4em 0;
+    border-bottom: 1px solid var(--Obsidian-Shard, #060612);
+    border-top: 1px solid var(--Obsidian-Shard, #060612);
+    background: var(--decorative-bay, #b3dbd5) !important;
 
     &.first {
-      border-bottom-left-radius: 1em;
-      border-top-left-radius: 1em;
+      border-left: 1px solid var(--Obsidian-Shard, #060612);
     }
     &.last {
-      border-bottom-right-radius: 1em;
-      border-top-right-radius: 1em;
+      border-right: 1px solid var(--Obsidian-Shard, #060612);
     }
   }
 
   .referrals-header {
     font-weight: bold;
+    font-size: larger;
+    background: none !important;
+    border: none !important;
+    padding-top: 1em;
+    padding-bottom: 1em;
   }
 
   .referrals-element {
@@ -279,5 +285,9 @@ onMounted(async () => {
   border: 1px solid var(--Obsidian-Shard, #060612);
   background: var(--White, #fff);
   box-shadow: 3px 3px 0px 0px #d4e68c, 4px 4px 0px 0px #060612;
+}
+
+.bay {
+  color: #62948d;
 }
 </style>
