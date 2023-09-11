@@ -13,6 +13,8 @@ import type ClaimResponseDto from "@/common/api/dto/ClaimResponseDto";
 import type ChartDataDto from "@/common/api/dto/ChartDataDto";
 import type CampaignDataDto from "@/common/api/dto/CampaignDataDto";
 import moment from "moment";
+import type ReferralListRequest from "@/common/api/ReferralListRequest";
+import type ReferralListResponse from "@/common/api/ReferralListResponse";
 
 export type Context = ActionContext<{}, RootStateInterface>;
 export type HttpAction = Action<{}, RootStateInterface>;
@@ -100,6 +102,13 @@ export interface ActionsInterface extends ActionTree<{}, RootStateInterface> {
       context: Context,
       payload: { campaignId: string; }
     ) => Promise<CampaignDataDto>);
+
+  getReferrals: HttpAction &
+    ((
+      this: Store<RootStateInterface>,
+      context: Context,
+      payload: ReferralListRequest
+    ) => Promise<ReferralListResponse>);
 }
 
 export default class Actions implements ActionsInterface {
@@ -446,6 +455,28 @@ export default class Actions implements ActionsInterface {
     const responseData = await HttpResponse.fromResponse<ChartDataDto>(
       response
     );
+
+    return responseData.payload;
+  };
+
+  getReferrals = async (
+    context: Context,
+    payload: ReferralListRequest
+  ): Promise<ReferralListResponse> => {
+    const response: Response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/referrals`,
+      {
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": context.rootState.UserModule?.token || "",
+        },
+        method: "POST",
+      }
+    );
+
+    const responseData =
+      await HttpResponse.fromResponse<ReferralListResponse>(response);
 
     return responseData.payload;
   };
