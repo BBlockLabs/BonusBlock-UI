@@ -9,11 +9,11 @@
       >
         <div
           class="card-image"
-          :class="announcement.image ? '' : 'random-cube'"
+          :class="announcement.bannerUrl ? '' : 'random-cube'"
           :style="{
             backgroundImage:
               'url(' +
-              (announcement.image ?? randomCube(announcement.id)) +
+              (announcement.bannerUrl ?? randomCube(announcement.id)) +
               ')',
             backgroundColor: randomBackgroundColor(announcement.id),
           }"
