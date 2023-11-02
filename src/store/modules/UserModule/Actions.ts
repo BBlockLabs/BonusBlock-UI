@@ -389,6 +389,69 @@ export default class Actions implements ActionsInterface {
 
     await context.dispatch("setLoginResponseData", loginResponse);
   };
+  okxLogin = async (
+    context: Context,
+    referral: string | null
+  ): Promise<void> => {
+    // @ts-ignore
+    if (!window.okxwallet) {
+      throw new FormattedError(
+        "OKX extension not reachable. Enable or install it first and reload the page."
+      );
+    }
+
+    let nonce: string;
+    try {
+      nonce = crypto.randomUUID();
+    } catch (e) {
+      nonce = new Date().valueOf() + "-" + Math.random();
+    }
+
+    const ticket: string = await context.dispatch(
+      "HttpModule/getAuthTicket",
+      nonce,
+      { root: true }
+    );
+
+    let accounts: Array<string>;
+    let encodedMessage: Uint8Array;
+    let chainId: string;
+
+    try {
+      accounts = await window.okxwallet.request({method: 'eth_requestAccounts'});
+      encodedMessage = new TextEncoder().encode(ticket);
+
+      chainId = await window.okxwallet.request({method: "eth_chainId"});
+    } catch (e) {
+      console.error('Cannot get accounts/chainId:', e);
+      throw new FormattedError("Cannot retrieve wallets from OKX: " + e.message);
+    }
+
+    let signData = [accounts[0], ticket];
+
+    console.log('signing with ', signData);
+
+    const signedMessage = await window.okxwallet
+      .request({
+        method: 'eth_sign',
+        params: signData,
+      });
+
+    const loginResponse: LoginResponse = await context.dispatch(
+      "HttpModule/connectEthereum",
+      new MetamaskConnectRequest(
+        `eth-${chainId}`,
+        signedMessage,
+        nonce,
+        referral
+      ),
+      { root: true }
+    );
+
+    console.log('got response: ', loginResponse);
+
+    await context.dispatch("setLoginResponseData", loginResponse);
+  };
 
   logout = async (context: Context): Promise<void> => {
     try {

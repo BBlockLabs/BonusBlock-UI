@@ -76,7 +76,7 @@ const anouncementData = {
   title: "ZetaChain",
   rewardPoolSize: 0,
   description:
-  "<b>Introducing Zetachain!</b><br><br>The Blockchain for Cross-Chain Apps.<br><br>An EVM-compatible L1 blockchain that connects everything: Build interoperable dApps that span any chain including Bitcoin; access all chains from one place.<br><br> <a target='_blank' href=https://docs.google.com/document/d/1FmSZftzb0XpqKddrDZKDHT7KlH7Fr69C93VDcvFgReE>Participate in the testnet and earn ZETA Points</a>   ",
+  "<b>Introducing Zetachain!</b><br><br>The Blockchain for Cross-Chain Apps.<br><br>An EVM-compatible L1 blockchain that connects everything: Build interoperable dApps that span any chain including Bitcoin; access all chains from one place.<br><br> <a target='_blank' href='https://labs.zetachain.com/get-zeta'>Participate in the testnet and earn ZETA Points</a>   ",
 };
 </script>
 

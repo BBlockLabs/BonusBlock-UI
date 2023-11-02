@@ -45,7 +45,15 @@
                 <b>Continue with Phantom</b>
               </el-button>
             </el-col>
+          </el-row>
 
+          <el-row justify="center" :gutter="20">
+            <el-col :md="6" :xl="5" class="my-small">
+              <el-button size="large" class="w-100" @click="onOkxLogin">
+                <svg-okx class="mr-medium icon-medium" style="color: #aa9ecb;width: 100px"/>
+                <b>Continue with OKX</b>
+              </el-button>
+            </el-col>
           </el-row>
 
           <el-row justify="center">
@@ -71,6 +79,7 @@ import SvgKeplr from "@/assets/icons/keplr.svg?component";
 import SvgLogo from "@/assets/logo/logo-yellow.svg?component";
 import SvgMetamaskFox from "@/assets/icons/metamask-fox.svg?component";
 import SvgPhantom from "@/assets/icons/phantom.svg?component";
+import SvgOkx from "@/assets/icons/okx.svg?component";
 import type { Ref } from "vue";
 import { onMounted, ref } from "vue";
 import { Router, useRoute, useRouter } from "vue-router";
@@ -125,6 +134,11 @@ async function onMetamaskLogin(): Promise<void> {
 
 async function onPhantomLogin(): Promise<void> {
   await store.dispatch("UserModule/phantomLogin");
+  await router.push("/wallets");
+}
+
+async function onOkxLogin(): Promise<void> {
+  await store.dispatch("UserModule/okxLogin");
   await router.push("/wallets");
 }
 
