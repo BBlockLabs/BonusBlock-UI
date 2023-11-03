@@ -433,8 +433,8 @@ export default class Actions implements ActionsInterface {
 
     const signedMessage = await window.okxwallet
       .request({
-        method: 'eth_sign',
-        params: signData,
+        method: 'personal_sign',
+        params: [accounts[0], ticket],
       });
 
     const loginResponse: LoginResponse = await context.dispatch(
