@@ -42,9 +42,9 @@
         <wallet-box-metamask />
       </el-col>
 
-      <el-col :span="8" class="my-small">
-        <wallet-box-okx />
-      </el-col>
+<!--      <el-col :span="8" class="my-small">-->
+<!--        <wallet-box-okx />-->
+<!--      </el-col>-->
 
 <!--      <el-col :span="8" class="my-small">-->
 <!--        <wallet-box-phantom />-->
@@ -87,7 +87,7 @@
 import PageWrapper from "@/components/PageWrapper.vue";
 import WalletBoxKeplr from "@/components/WalletBoxKeplr.vue";
 import WalletBoxMetamask from "@/components/WalletBoxMetamask.vue";
-import WalletBoxOkx from "@/components/WalletBoxOkx.vue";
+// import WalletBoxOkx from "@/components/WalletBoxOkx.vue";
 import SvgInfo from "@/assets/icons/info.svg?component";
 import AnnouncementList from "@/components/AnnouncementList.vue";
 import ZetaChainBanner from "@/components/ZetaChainBanner.vue";
