@@ -26,6 +26,7 @@
 @use "@/design/components/cookie-consent.scss";
 @use "@/design/components/rewards-and-announcements.scss";
 @use "@/design/components/apexchart.scss";
+@use "@/design/components/input.scss";
 
 body {
   background: #FFF7EA
@@ -37,6 +38,12 @@ svg {
   &.icon,
   &.icon-normal {
     height: 1.714em;
+  }
+  &.icon-small {
+    height: 1.3em;
+  }
+  &.icon-extra-small {
+    height: 1em;
   }
 }
 

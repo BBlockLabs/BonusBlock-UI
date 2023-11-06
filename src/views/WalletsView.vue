@@ -50,8 +50,7 @@
 <!--        <wallet-box-phantom />-->
 <!--      </el-col>-->
     </el-row>
-
-    <ZetaChainBanner />
+    <SocialConnectCard />
 
     <el-row>
       <h2>Announcements</h2>
@@ -90,7 +89,7 @@ import WalletBoxMetamask from "@/components/WalletBoxMetamask.vue";
 // import WalletBoxOkx from "@/components/WalletBoxOkx.vue";
 import SvgInfo from "@/assets/icons/info.svg?component";
 import AnnouncementList from "@/components/AnnouncementList.vue";
-import ZetaChainBanner from "@/components/ZetaChainBanner.vue";
+import SocialConnectCard from "@/components/SocialConnectCard.vue";
 
 </script>
 
