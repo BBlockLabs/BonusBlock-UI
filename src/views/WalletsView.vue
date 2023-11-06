@@ -50,7 +50,10 @@
 <!--        <wallet-box-phantom />-->
 <!--      </el-col>-->
     </el-row>
-    <SocialConnectCard />
+
+    <div class="mt-large">
+      <SocialConnectCard />
+    </div>
 
     <el-row>
       <h2>Announcements</h2>

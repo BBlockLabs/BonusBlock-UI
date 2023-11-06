@@ -83,13 +83,12 @@
       </template>
     </div>
   </el-dialog>
-
-  <el-row>
+  <div>
     <box-wrapper type="white" class="social-card-container is-shadow">
       <el-row class="social-card">
         <div class="social-card-image">
           <img
-            src="https://www.ivins.com/wp-content/uploads/2020/09/placeholder-1.png"
+            :src="PngSocialCardImage"
             alt="image"
           />
         </div>
@@ -138,7 +137,7 @@
         </el-col>
       </el-row>
     </box-wrapper>
-  </el-row>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -149,6 +148,7 @@ import SvgDiscord from "@/assets/icons/discord.svg?component";
 import SvgReddit from "@/assets/icons/reddit.svg?component";
 import SvgMail from "@/assets/icons/mail.svg?component";
 import SvgMailConfirmed from "@/assets/images/mail-confirmed.svg?component";
+import PngSocialCardImage from "@/assets/images/social-card-img.png";
 import { reactive, ref, Ref, watch } from "vue";
 import type { FormInstance } from "element-plus";
 
@@ -236,6 +236,9 @@ function linkSocial(action: string) {
     overflow: hidden;
 
     .social-card-image {
+      margin-top: auto;
+      margin-bottom: auto;
+
       img {
         border: 1px solid black;
         border-radius: 12px;
