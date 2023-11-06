@@ -26,7 +26,7 @@ import { Plugins } from "@/common/Plugins";
 import MetamaskClient from "@/common/MetamaskClient";
 import Chain from "@/common/Chain";
 import Toast from "@/common/Toast";
-import { store } from "@/store";
+import { ElMessageBox } from "element-plus";
 
 export type Context = ActionContext<StateInterface, RootStateInterface>;
 export type UserAction = Action<StateInterface, RootStateInterface>;
@@ -395,9 +395,26 @@ export default class Actions implements ActionsInterface {
   ): Promise<void> => {
     // @ts-ignore
     if (!window.okxwallet) {
-      throw new FormattedError(
-        "OKX extension not reachable. Enable or install it first and reload the page."
-      );
+      try {
+        await ElMessageBox.alert(
+          "OKX extension not reachable. Enable or install it first and reload the page.",
+          "OKX not found",
+          {
+            showCancelButton: true,
+            confirmButtonText: "Get OKX",
+            cancelButtonText: "Close",
+            beforeClose: (action, instance, done) => {
+              if (action === "confirm") {
+                window.open('https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge?pli=1', '_blank');
+                done();
+              } else {
+                done();
+              }
+            },
+          }
+        );
+      } catch (e) {}
+      return;
     }
 
     let nonce: string;
@@ -414,28 +431,26 @@ export default class Actions implements ActionsInterface {
     );
 
     let accounts: Array<string>;
-    let encodedMessage: Uint8Array;
     let chainId: string;
 
     try {
-      accounts = await window.okxwallet.request({method: 'eth_requestAccounts'});
-      encodedMessage = new TextEncoder().encode(ticket);
-
-      chainId = await window.okxwallet.request({method: "eth_chainId"});
+      accounts = await window.okxwallet.request({
+        method: "eth_requestAccounts",
+      });
+      chainId = await window.okxwallet.request({ method: "eth_chainId" });
     } catch (e) {
-      console.error('Cannot get accounts/chainId:', e);
-      throw new FormattedError("Cannot retrieve wallets from OKX: " + e.message);
+      console.error("Cannot get accounts/chainId:", e);
+      throw new FormattedError(
+        "Cannot retrieve wallets from OKX: " + e.message
+      );
     }
 
-    let signData = [accounts[0], ticket];
+    const signData = [accounts[0], ticket];
 
-    console.log('signing with ', signData);
-
-    const signedMessage = await window.okxwallet
-      .request({
-        method: 'personal_sign',
-        params: [accounts[0], ticket],
-      });
+    const signedMessage = await window.okxwallet.request({
+      method: "personal_sign",
+      params: signData,
+    });
 
     const loginResponse: LoginResponse = await context.dispatch(
       "HttpModule/connectEthereum",
@@ -447,8 +462,6 @@ export default class Actions implements ActionsInterface {
       ),
       { root: true }
     );
-
-    console.log('got response: ', loginResponse);
 
     await context.dispatch("setLoginResponseData", loginResponse);
   };
