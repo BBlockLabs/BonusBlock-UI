@@ -68,7 +68,7 @@
             <span>We sent a confirmation email to</span>
           </el-row>
           <el-row class="w-100 mt-small" justify="center">
-            <span>{{ dynamicValidateForm.email }}</span>
+            <b>{{ dynamicValidateForm.email }}</b>
           </el-row>
           <el-row class="w-100 mt-medium" justify="center">
             <span>Please verify your email within next 24 hours</span>
@@ -149,8 +149,11 @@ import SvgReddit from "@/assets/icons/reddit.svg?component";
 import SvgMail from "@/assets/icons/mail.svg?component";
 import SvgMailConfirmed from "@/assets/images/mail-confirmed.svg?component";
 import PngSocialCardImage from "@/assets/images/social-card-img.png";
-import { reactive, ref, Ref, watch } from "vue";
-import type { FormInstance } from "element-plus";
+import {reactive, ref, Ref, watch} from "vue";
+import type {FormInstance} from "element-plus";
+import HttpResponse from "@/common/api/HttpResponse";
+import {store} from "@/store";
+import Toast from "@/common/Toast";
 
 const linkEmailDialog: Ref<boolean> = ref(false);
 const emailValid: Ref<boolean> = ref(false);
@@ -158,20 +161,84 @@ const emailLoading: Ref<boolean> = ref(false);
 const emailConfirmed: Ref<boolean> = ref(false);
 
 const formRef = ref<FormInstance>();
-const dynamicValidateForm = reactive<{
-  email: string;
-}>({
-  email: "",
-});
+const dynamicValidateForm = reactive<{ email: string }>({ email: "" });
 
-function submitForm(formEl: FormInstance | undefined) {
+async function checkEmailVerificationCode() {
+  let params = new URLSearchParams(window.location.search);
+  if (params.has("code")) {
+    const response: Response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/mail/verify`,
+      {
+        body: JSON.stringify({ code: params.get("code") }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": store.state.UserModule?.token || "",
+        },
+        method: "POST",
+      }
+    );
+    try {
+      await HttpResponse.fromResponse<string>(response);
+      Toast.make(
+        "Email verified",
+        "You have successfully linked your email address",
+        "success",
+        true,
+        3000
+      );
+      await store.dispatch("UserModule/getStatus");
+    } catch (e: any) {
+      Toast.make(
+        "Cannot verify email",
+        "Email verification error: " + e.message,
+        "error",
+        true,
+        3000
+      );
+    }
+  }
+}
+
+async function submitForm(formEl: FormInstance | undefined) {
   if (!formEl) return;
-  formEl.validate((valid) => {
+  await formEl.validate((valid) => {
     if (valid) {
       emailLoading.value = true;
-      //TODO email verify call
-      emailLoading.value = false;
-      emailConfirmed.value = true;
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/mail/register`, {
+        body: JSON.stringify({ email: dynamicValidateForm.email }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": store.state.UserModule?.token || "",
+        },
+        method: "POST",
+      })
+        .then((res) => {
+          HttpResponse.fromResponse<Object>(res)
+            .then(() => {
+              emailConfirmed.value = true;
+            })
+            .catch((e) => {
+              Toast.make(
+                "Failed to send email",
+                "Something went wrong with email confirmation: " + e.message,
+                "error",
+                true,
+                3000
+              );
+            });
+        })
+        .catch(() => {
+          Toast.make(
+            "Failed to send email",
+            "Something went wrong with email confirmation, try again later",
+            "error",
+            true,
+            3000
+          );
+        })
+        .finally(() => {
+          emailLoading.value = false;
+        });
     }
   });
 }
@@ -226,6 +293,8 @@ const linkData = [
 function linkSocial(action: string) {
   //TODO social linking, dialogs
 }
+
+checkEmailVerificationCode();
 </script>
 
 <style scoped lang="scss">
