@@ -27,6 +27,7 @@ import MetamaskClient from "@/common/MetamaskClient";
 import Chain from "@/common/Chain";
 import Toast from "@/common/Toast";
 import { ElMessageBox } from "element-plus";
+import HttpResponse from "@/common/api/HttpResponse";
 
 export type Context = ActionContext<StateInterface, RootStateInterface>;
 export type UserAction = Action<StateInterface, RootStateInterface>;
@@ -77,6 +78,16 @@ export interface ActionsInterface
   setLoginResponseData: UserAction &
     ((context: Context, loginResponse: LoginResponse) => Promise<void>);
   removeSession: UserAction & ((context: Context) => void);
+
+  removeSocial: UserAction &
+    ((context: Context, social: "twitter" | "discord" | "reddit" | "telegram" | "github" | "email") => void);
+
+  verifyEmail: UserAction &
+    ((
+      this: Store<RootStateInterface>,
+      context: Context,
+      payload: string
+    ) => Promise<void>);
 }
 
 export default class Actions implements ActionsInterface {
@@ -127,6 +138,16 @@ export default class Actions implements ActionsInterface {
     user.invitedCount = loginResponse.account.invitedCount;
     user.createdOn = moment(loginResponse.account.createdOn);
     user.modifiedOn = moment(loginResponse.account.modifiedOn);
+    user.twitter = loginResponse.account.twitter;
+    user.discord = loginResponse.account.discord;
+    user.reddit = loginResponse.account.reddit;
+    user.telegram = loginResponse.account.telegram;
+    user.github = loginResponse.account.github;
+    user.email = loginResponse.account.email;
+
+    Object.entries(loginResponse.account.metadata).map(([key, value])=> {
+      user.metadata.set(key, value);
+    });
 
     context.commit("setUser", user);
 
@@ -438,7 +459,7 @@ export default class Actions implements ActionsInterface {
         method: "eth_requestAccounts",
       });
       chainId = await window.okxwallet.request({ method: "eth_chainId" });
-    } catch (e) {
+    } catch (e: any) {
       console.error("Cannot get accounts/chainId:", e);
       throw new FormattedError(
         "Cannot retrieve wallets from OKX: " + e.message
@@ -476,5 +497,30 @@ export default class Actions implements ActionsInterface {
     } finally {
       await context.dispatch("removeSession");
     }
+  };
+
+  removeSocial = (context: Context, social: "twitter" | "discord" | "reddit" | "telegram" | "github" | "email"): void => {
+    if (context.rootState.UserModule?.user && context.rootState.UserModule.user?.[social]) {
+      context.rootState.UserModule.user[social] = '';
+    }
+  };
+
+  verifyEmail = async (
+    context: Context,
+    payload: string
+  ): Promise<void> => {
+    const response: Response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/mail/verify`,
+      {
+        body: JSON.stringify({ code: payload }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": context.rootState.UserModule?.token || "",
+        },
+        method: "POST",
+      }
+    );
+    console.log(response);
+    await HttpResponse.fromResponse<void>(response);
   };
 }

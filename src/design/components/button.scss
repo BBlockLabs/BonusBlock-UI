@@ -44,11 +44,10 @@
 
 .el-button:not(.is-link) {
   box-shadow: none;
-  border: none;
 
   &.el-button--secondary {
+    border: 1px solid black;
     background-color: #F5BF5B;
-
 
     &:hover:not(.is-disabled),
     &:active:not(.is-disabled),

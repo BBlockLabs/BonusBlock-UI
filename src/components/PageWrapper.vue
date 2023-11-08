@@ -65,7 +65,7 @@
       <navigation-bar />
     </el-header>
 
-    <el-main :class="noPadding ? 'px-0 pt-0' : 'px-large pt-small'">
+    <el-main class="flex-column" :class="noPadding ? 'px-0 pt-0' : 'px-large pt-small'">
       <div id="page-wrapper" :class="fullWidth ? '' : 'limit-width'" :style="fullHeight ? 'height: 100%' : ''" v-bind="$attrs">
         <slot />
       </div>

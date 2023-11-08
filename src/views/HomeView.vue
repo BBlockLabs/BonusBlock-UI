@@ -129,22 +129,29 @@ async function onMetamaskLogin(): Promise<void> {
     return;
   }
 
-  await router.push("/wallets");
+  await proceedToWallets();
 }
 
 async function onPhantomLogin(): Promise<void> {
   await store.dispatch("UserModule/phantomLogin");
-  await router.push("/wallets");
+  await proceedToWallets();
 }
 
 async function onOkxLogin(): Promise<void> {
   await store.dispatch("UserModule/okxLogin");
-  await router.push("/wallets");
+  await proceedToWallets();
 }
 
 async function onKeplrLogin(): Promise<void> {
   keplrDialog.value = false;
-  await router.push("/wallets");
+  await proceedToWallets();
+}
+
+async function proceedToWallets() {
+  await router.push({
+    path: "/wallets",
+    query: router.currentRoute.value.query,
+  });
 }
 
 onMounted(() => {
