@@ -114,6 +114,12 @@ setTimeout(() => {
   });
 }, 1000);
 
+setTimeout(() => {
+  if (window.location.href.indexOf("okxlogin") != -1) {
+    onOkxLogin();
+  }
+}, 200);
+
 async function onMetamaskLogin(): Promise<void> {
   try {
     await MetamaskClient.metamaskLogin(

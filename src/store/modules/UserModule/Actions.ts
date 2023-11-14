@@ -415,6 +415,39 @@ export default class Actions implements ActionsInterface {
     referral: string | null
   ): Promise<void> => {
     // @ts-ignore
+
+    const ua = navigator.userAgent;
+    const isIOS = /iphone|ipad|ipod|ios/i.test(ua);
+    const isAndroid = /android|XiaoMi|MiuiBrowser/i.test(ua);
+    const isMobile = isIOS || isAndroid;
+    const isOKApp = /OKApp/i.test(ua);
+
+    if (isMobile && !isOKApp) {
+      const deeplinkUrl =
+        "okx://wallet/dapp/details?dappUrl=https%3A%2F%2Fapp2.bonusblock.io%3Fokxlogin";
+      let change = false;
+      setTimeout(() => {
+        if (!change) {
+          if (isIOS) {
+            window.location.href =
+              "https://apps.apple.com/us/app/okx-buy-bitcoin-btc-crypto/id1327268470";
+          } else {
+            window.location.href =
+              "https://play.google.com/store/apps/details?id=com.okinc.okex.gp";
+          }
+        }
+      }, 2000);
+      window.location.href = deeplinkUrl;
+      //handle event to check app installed or not
+      window.onblur = function () {
+        change = true;
+      };
+      window.onfocus = function () {
+        change = false;
+      };
+      return;
+    }
+
     if (!window.okxwallet) {
       try {
         await ElMessageBox.alert(
@@ -426,7 +459,10 @@ export default class Actions implements ActionsInterface {
             cancelButtonText: "Close",
             beforeClose: (action, instance, done) => {
               if (action === "confirm") {
-                window.open('https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge?pli=1', '_blank');
+                window.open(
+                  "https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge?pli=1",
+                  "_blank"
+                );
                 done();
               } else {
                 done();
