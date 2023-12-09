@@ -43,11 +43,17 @@
       </el-col>
 
 <!--      <el-col :span="8" class="my-small">-->
+<!--        <wallet-box-okx />-->
+<!--      </el-col>-->
+
+<!--      <el-col :span="8" class="my-small">-->
 <!--        <wallet-box-phantom />-->
 <!--      </el-col>-->
     </el-row>
 
-    <SerenityBanner />
+    <div class="mt-large">
+      <SocialConnectCard />
+    </div>
 
     <el-row>
       <h2>Announcements</h2>
@@ -83,9 +89,10 @@
 import PageWrapper from "@/components/PageWrapper.vue";
 import WalletBoxKeplr from "@/components/WalletBoxKeplr.vue";
 import WalletBoxMetamask from "@/components/WalletBoxMetamask.vue";
+// import WalletBoxOkx from "@/components/WalletBoxOkx.vue";
 import SvgInfo from "@/assets/icons/info.svg?component";
 import AnnouncementList from "@/components/AnnouncementList.vue";
-import SerenityBanner from "@/components/SerenityBanner.vue";
+import SocialConnectCard from "@/components/SocialConnectCard.vue";
 
 </script>
 

@@ -1,0 +1,7 @@
+.el-input {
+  &.transparent-bg {
+    .el-input__wrapper {
+      background: transparent;
+    }
+  }
+}

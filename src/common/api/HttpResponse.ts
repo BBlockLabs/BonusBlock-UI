@@ -44,10 +44,16 @@ export default class HttpResponse<TPayload> {
     if (errorMessage) {
       console.error(errorMessage);
       if (response.status === 401) {
-        Toast.make("Unauthorized", errorMessage, "error", false, 0, "not-logged-in");
-        store.dispatch("UserModule/removeSession").then(() => {
-          router.push("/");
-        });
+        //TODO: remove formatting dependency
+        if (errorMessage === "• ALREADY_LOGGED_IN") {
+          router.push("/wallets");
+          throw new FormattedError("Already logged in");
+        } else {
+          Toast.make("Unauthorized", errorMessage, "error", false, 0, "not-logged-in");
+          store.dispatch("UserModule/removeSession").then(() => {
+            router.push("/");
+          });
+        }
       }
       throw response.status === 401
         ? new HttpUnauthorizedError(errorMessage)

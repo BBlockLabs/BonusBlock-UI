@@ -26,7 +26,8 @@ import { Plugins } from "@/common/Plugins";
 import MetamaskClient from "@/common/MetamaskClient";
 import Chain from "@/common/Chain";
 import Toast from "@/common/Toast";
-import { store } from "@/store";
+import { ElMessageBox } from "element-plus";
+import HttpResponse from "@/common/api/HttpResponse";
 
 export type Context = ActionContext<StateInterface, RootStateInterface>;
 export type UserAction = Action<StateInterface, RootStateInterface>;
@@ -77,6 +78,16 @@ export interface ActionsInterface
   setLoginResponseData: UserAction &
     ((context: Context, loginResponse: LoginResponse) => Promise<void>);
   removeSession: UserAction & ((context: Context) => void);
+
+  removeSocial: UserAction &
+    ((context: Context, social: "twitter" | "discord" | "reddit" | "telegram" | "github" | "email") => void);
+
+  verifyEmail: UserAction &
+    ((
+      this: Store<RootStateInterface>,
+      context: Context,
+      payload: string
+    ) => Promise<void>);
 }
 
 export default class Actions implements ActionsInterface {
@@ -127,6 +138,16 @@ export default class Actions implements ActionsInterface {
     user.invitedCount = loginResponse.account.invitedCount;
     user.createdOn = moment(loginResponse.account.createdOn);
     user.modifiedOn = moment(loginResponse.account.modifiedOn);
+    user.twitter = loginResponse.account.twitter;
+    user.discord = loginResponse.account.discord;
+    user.reddit = loginResponse.account.reddit;
+    user.telegram = loginResponse.account.telegram;
+    user.github = loginResponse.account.github;
+    user.email = loginResponse.account.email;
+
+    Object.entries(loginResponse.account.metadata).map(([key, value])=> {
+      user.metadata.set(key, value);
+    });
 
     context.commit("setUser", user);
 
@@ -389,6 +410,118 @@ export default class Actions implements ActionsInterface {
 
     await context.dispatch("setLoginResponseData", loginResponse);
   };
+  okxLogin = async (
+    context: Context,
+    referral: string | null
+  ): Promise<void> => {
+    // @ts-ignore
+
+    const ua = navigator.userAgent;
+    const isIOS = /iphone|ipad|ipod|ios/i.test(ua);
+    const isAndroid = /android|XiaoMi|MiuiBrowser/i.test(ua);
+    const isMobile = isIOS || isAndroid;
+    const isOKApp = /OKApp/i.test(ua);
+
+    if (isMobile && !isOKApp) {
+      const deeplinkUrl =
+        "okx://wallet/dapp/details?dappUrl=https%3A%2F%2Fapp2.bonusblock.io%3Fokxlogin";
+      let change = false;
+      setTimeout(() => {
+        if (!change) {
+          if (isIOS) {
+            window.location.href =
+              "https://apps.apple.com/us/app/okx-buy-bitcoin-btc-crypto/id1327268470";
+          } else {
+            window.location.href =
+              "https://play.google.com/store/apps/details?id=com.okinc.okex.gp";
+          }
+        }
+      }, 2000);
+      window.location.href = deeplinkUrl;
+      //handle event to check app installed or not
+      window.onblur = function () {
+        change = true;
+      };
+      window.onfocus = function () {
+        change = false;
+      };
+      return;
+    }
+
+    if (!window.okxwallet) {
+      try {
+        await ElMessageBox.alert(
+          "OKX extension not reachable. Enable or install it first and reload the page.",
+          "OKX not found",
+          {
+            showCancelButton: true,
+            confirmButtonText: "Get OKX",
+            cancelButtonText: "Close",
+            beforeClose: (action, instance, done) => {
+              if (action === "confirm") {
+                window.open(
+                  "https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge?pli=1",
+                  "_blank"
+                );
+                done();
+              } else {
+                done();
+              }
+            },
+          }
+        );
+      } catch (e) {}
+      return;
+    }
+
+    let nonce: string;
+    try {
+      nonce = crypto.randomUUID();
+    } catch (e) {
+      nonce = new Date().valueOf() + "-" + Math.random();
+    }
+
+    const ticket: string = await context.dispatch(
+      "HttpModule/getAuthTicket",
+      nonce,
+      { root: true }
+    );
+
+    let accounts: Array<string>;
+    let chainId: string;
+
+    try {
+      accounts = await window.okxwallet.request({
+        method: "eth_requestAccounts",
+      });
+      chainId = await window.okxwallet.request({ method: "eth_chainId" });
+    } catch (e: any) {
+      console.error("Cannot get accounts/chainId:", e);
+      throw new FormattedError(
+        "Cannot retrieve wallets from OKX: " + e.message
+      );
+    }
+
+    const signData = [accounts[0], ticket];
+
+    const signedMessage = await window.okxwallet.request({
+      method: "personal_sign",
+      params: signData,
+    });
+
+    const loginResponse: LoginResponse = await context.dispatch(
+      "HttpModule/connectEthereum",
+      new MetamaskConnectRequest(
+        `eth-${chainId}`,
+        signedMessage,
+        nonce,
+        referral
+      ),
+      { root: true }
+    );
+
+    await context.dispatch("setLoginResponseData", loginResponse);
+  };
 
   logout = async (context: Context): Promise<void> => {
     try {
@@ -400,5 +533,30 @@ export default class Actions implements ActionsInterface {
     } finally {
       await context.dispatch("removeSession");
     }
+  };
+
+  removeSocial = (context: Context, social: "twitter" | "discord" | "reddit" | "telegram" | "github" | "email"): void => {
+    if (context.rootState.UserModule?.user && context.rootState.UserModule.user?.[social]) {
+      context.rootState.UserModule.user[social] = '';
+    }
+  };
+
+  verifyEmail = async (
+    context: Context,
+    payload: string
+  ): Promise<void> => {
+    const response: Response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/mail/verify`,
+      {
+        body: JSON.stringify({ code: payload }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": context.rootState.UserModule?.token || "",
+        },
+        method: "POST",
+      }
+    );
+    console.log(response);
+    await HttpResponse.fromResponse<void>(response);
   };
 }

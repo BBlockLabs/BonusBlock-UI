@@ -44,6 +44,35 @@
 
 .el-button:not(.is-link) {
   box-shadow: none;
+
+  &.el-button--secondary {
+    border: 1px solid black;
+    background-color: #F5BF5B;
+
+    &:hover:not(.is-disabled),
+    &:active:not(.is-disabled),
+    &:focus:not(.is-disabled) {
+      background-color: #ffbb00;
+    }
+
+    &.is-disabled {
+      background-color: #a8abb2;
+      color: #4f4e4e;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  &.el-button--tertiary {
+    background: transparent;
+    border: 1px solid black;
+
+    &:hover:not(.is-disabled),
+    &:active:not(.is-disabled),
+    &:focus:not(.is-disabled) {
+      background: rgba(0, 0, 0, 0.07);
+    }
+  }
 }
 
 .el-button:not(.is-link):hover {

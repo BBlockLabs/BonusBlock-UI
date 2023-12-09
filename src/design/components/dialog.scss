@@ -4,6 +4,7 @@
 @use 'element-plus/theme-chalk/src/common/var' as EPVar;
 
 @include EPMixins.b(dialog) {
+
   @include EPMixins.res(xs, EPVar.$breakpoints) {
     width: 100%;
   }
@@ -35,5 +36,17 @@
         color: EPFunctions.getCssVar('color', 'secondary');
       }
     }
+  }
+}
+
+.el-dialog {
+  &.is-shadow {
+    box-shadow: 3px 3px 0px #F5BF5B, 4px 4px 0px #000000;
+  }
+  &.is-black-border {
+    border: 1px solid black;
+  }
+  &.yellow-bg {
+    background-color: #FFF7EA;
   }
 }
