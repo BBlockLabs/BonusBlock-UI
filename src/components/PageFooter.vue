@@ -7,6 +7,7 @@
           :github="LinkGithub"
           :telegram="LinkTelegram"
           :reddit="LinkReddit"
+          :discord="LinkDiscord"
         />
       </el-col>
 
@@ -26,6 +27,7 @@ const LinkGithub: string = import.meta.env.VITE_LINK_GITHUB;
 const LinkTwitter: string = import.meta.env.VITE_LINK_TWITTER;
 const LinkTelegram: string = import.meta.env.VITE_LINK_TELEGRAM;
 const LinkReddit: string = import.meta.env.VITE_LINK_REDDIT;
+const LinkDiscord: string = import.meta.env.VITE_LINK_DISCORD;
 
 export interface Props {
   colored?: boolean;
