@@ -1,6 +1,7 @@
 <template>
   <chain-select
     :networks="networksList"
+    :forlink="forlink"
     :chain-wallet="chainWallet"
     @connect-click="connectWallet"
     @disconnect-click="removeWallet"
@@ -31,6 +32,14 @@ defaultChain.source = "Metamask";
 defaultChain.denom = "any";
 defaultChain.name = "Connect new";
 defaultChain.id = "0x0";
+
+export interface Props {
+  forlink: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  forlink: false,
+});
 
 const wallets: ComputedRef<Array<Wallet>> = computed(
   () => store.state.UserModule?.wallets || []
@@ -66,7 +75,7 @@ function chainWallet(chainId: string): Wallet | null {
 }
 
 const connectWallet = async (chain: Chain): Promise<void> => {
-  await MetamaskClient.metamaskLogin(store);
+  await MetamaskClient.metamaskLogin(store, props.forlink);
 
   emit("connect", chain);
 };

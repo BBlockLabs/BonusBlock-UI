@@ -2,6 +2,7 @@
   <chain-select
     :chain-wallet="chainWallet"
     :networks="networks"
+    :forlink="forlink"
     @connect-click="connectWallet"
     @disconnect-click="removeWallet"
   />
@@ -25,6 +26,14 @@ const emit = defineEmits(["connect", "disconnect"]);
 const route = useRoute();
 const router = useRouter();
 
+export interface Props {
+  forlink: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  forlink: false,
+});
+
 const networks = computed(() =>
   store.state.chains.filter((chain) => chain.source === "Keplr")
 );
@@ -47,6 +56,7 @@ const connectWallet = async (chain: Chain): Promise<void> => {
       "UserModule/keplrLogin",
       new LinkActionPayload(
         chain,
+        props.forlink,
         route.query.ref
           ? String(route.query.ref)
           : route.query.r

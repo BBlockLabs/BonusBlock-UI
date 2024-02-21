@@ -9,6 +9,7 @@
 
     <div v-loading="store.state.loading">
       <metamask-chain-select
+        :forlink="true"
         @connect="(payload: any) => emit('connect', payload)"
         @disconnect="(payload: any) => emit('disconnect', payload)"
       />
@@ -27,10 +28,12 @@ import { ref, watch } from "vue";
 
 export interface Props {
   open: boolean;
+  forlink: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   open: false,
+  forlink: false,
 });
 
 const emit = defineEmits(["connect", "disconnect", "update:open"]);

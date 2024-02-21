@@ -59,7 +59,7 @@ export interface ActionsInterface
     ((
       this: Store<RootStateInterface>,
       context: Context,
-      referralId: string | null
+      payload: object | null
     ) => Promise<void>);
 
   phantomLogin: UserAction &
@@ -178,8 +178,12 @@ export default class Actions implements ActionsInterface {
 
   metamaskLogin = async (
     context: Context,
-    referralId: string | null
+    payload: object | null
   ): Promise<void> => {
+    if (payload == null) {
+      payload = { referrer: null, forlink: false };
+    }
+
     if (!context.rootGetters.isPluginEnabled(Plugins.Metamask)) {
       throw new FormattedError(
         "MetaMask extension not found. Enable or install it first and reload the page."
@@ -215,6 +219,10 @@ export default class Actions implements ActionsInterface {
       nonce = new Date().valueOf() + "-" + Math.random();
     }
 
+    if (payload.forlink) {
+      nonce = 'link_' + nonce;
+    }
+
     const ticket: string = await context.dispatch(
       "HttpModule/getAuthTicket",
       nonce,
@@ -232,7 +240,7 @@ export default class Actions implements ActionsInterface {
         `eth-${chainId}`,
         signedMessage,
         nonce,
-        referralId
+        payload.referrer
       ),
       { root: true }
     );
@@ -302,6 +310,10 @@ export default class Actions implements ActionsInterface {
       nonce = crypto.randomUUID();
     } catch (e) {
       nonce = new Date().valueOf() + "-" + Math.random();
+    }
+
+    if (payload.forlink) {
+      nonce = 'link_' + nonce;
     }
 
     const ticket: string = await context.dispatch(
@@ -556,7 +568,6 @@ export default class Actions implements ActionsInterface {
         method: "POST",
       }
     );
-    console.log(response);
     await HttpResponse.fromResponse<void>(response);
   };
 }

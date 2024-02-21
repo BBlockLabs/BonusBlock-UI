@@ -8,7 +8,7 @@
     @connect-click="dialog = true"
   />
 
-  <dialog-keplr v-model:open="dialog" />
+  <dialog-keplr v-model:open="dialog" :forlink="true" />
 </template>
 
 <script setup lang="ts">

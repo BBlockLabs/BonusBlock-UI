@@ -28,6 +28,7 @@ export default class MetamaskClient {
 
   static async metamaskLogin(
     store: StoreType,
+    forlink: boolean = false,
     referrer: string | null = null
   ): Promise<void> {
     // if (!MetamaskClient.isMetamaskAgent() && MetamaskClient.canSwitchAgent()) {
@@ -39,7 +40,7 @@ export default class MetamaskClient {
     store.commit("setLoading", true);
 
     try {
-      await store.dispatch("UserModule/metamaskLogin", referrer);
+      await store.dispatch("UserModule/metamaskLogin", {referrer, forlink});
     } catch (e: any) {
       if (e instanceof FormattedError) {
         await ElMessageBox.alert(e.message, e.name, {

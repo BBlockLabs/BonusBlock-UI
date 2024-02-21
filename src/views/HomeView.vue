@@ -124,6 +124,7 @@ async function onMetamaskLogin(): Promise<void> {
   try {
     await MetamaskClient.metamaskLogin(
       store,
+      false,
       route.query.ref
         ? String(route.query.ref)
         : route.query.r

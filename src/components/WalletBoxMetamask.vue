@@ -9,7 +9,7 @@
     @connect-click="dialog = true"
   />
 
-  <metamask-dialog v-model:open="dialog" />
+  <metamask-dialog v-model:open="dialog" :forlink="true" />
 </template>
 
 <script setup lang="ts">
@@ -21,6 +21,7 @@ import Chain from "@/common/Chain";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 import metamaskChainList from "@/assets/chainid.network-chains.json";
+import DialogKeplr from "@/components/KeplrDialog.vue";
 
 const available: Ref<boolean> = ref(false);
 const dialog: Ref<boolean> = ref(false);
